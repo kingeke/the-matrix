@@ -29,6 +29,10 @@ class DashboardController extends Controller
             $response = json_decode($this->defaultClient()->post('challenge1', [
                 'json' => $json,
             ])->getBody(), true);
+            
+            info("bank statement", $response);
+
+            session()->forget('bank-data');
 
             session()->put('bank-data', [
                 'salary'         => collect(($response['salary'] ?? [])),
@@ -59,9 +63,14 @@ class DashboardController extends Controller
                     $json = json_encode($xmlObject);
 
                     $data = collect(json_decode($json, true)['BODY']);
+                    
+                    info("crc data", collect($data)->toArray());
                 }
+                
 
                 $response = CRCReportDataTransferObject::create($data);
+
+                session()->forget('credit-data-crc');
 
                 session()->put('credit-data-crc', [
                     'data' => $response,
@@ -78,6 +87,10 @@ class DashboardController extends Controller
                 $response = json_decode($this->defaultClient()->post('challenge2', [
                     'json' => $json,
                 ])->getBody(), true);
+                
+                info("crs data", $response);
+
+                session()->forget('credit-data-crs');
 
                 session()->put('credit-data-crs', [
                     'status' => $response['message'] ?? 'undetermined',
@@ -106,6 +119,7 @@ class DashboardController extends Controller
             'dudCheques'     => collect([]),
             'bankCharges'    => collect([]),
             'loanRepayments' => collect([]),
+            'repaymentDate ' => null
         ];
 
         return view('bank-statement', $data);
@@ -147,14 +161,14 @@ class DashboardController extends Controller
             'status' => null,
             'pdf'    => null,
         ];
-        
+
         return view('credit-check-crs', $data);
     }
 
     public function defaultClient($http_errors = false, $headers = null)
     {
         return new Client([
-            'base_uri'        => 'https://9f06f575c438.ngrok.io/',
+            'base_uri'        => 'http://fc10a0e9a725.ngrok.io/',
             'http_errors'     => $http_errors,
             'headers'         => $headers,
             'timeout'         => 60,

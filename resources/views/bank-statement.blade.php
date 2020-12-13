@@ -72,9 +72,11 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        @isset($repaymentDate)
                         <div class="my-3 text-center">
                             <h5>Repayment Date: {{ $repaymentDate }}</h5>
                         </div>
+                        @endisset
                         @if(collect(collect(($salary->first()['keywords'])))->count() > 0)
                         <div class="my-4 text-center col-sm-8 mx-auto">
                             <h5>Key words:</h5>
