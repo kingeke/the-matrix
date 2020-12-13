@@ -1,0 +1,23 @@
+.bg-danger {
+    background-color: #F15822 !important;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+table td {
+    white-space: nowrap;
+}
+
+table th {
+    white-space: nowrap;
+}
+
+.nav-items ul {
+    list-style-type: none;
+}
+
+.hidden {
+    display: none;
+}
